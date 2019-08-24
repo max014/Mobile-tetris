@@ -1,0 +1,12 @@
+export const UPDATE = 'UPDATE';
+export const SET_INPUT = 'SET_INPUT';
+export const END = 'END';
+export const SET_SCORES = 'SET_SCORES';
+export const START_GAME = 'START_GAME';
+export const POST_SCORE = 'POST_SCORE';
+export const PAUSE = 'PAUSE';
+export const NAVIGATE = 'NAVIGATE';
+export const SELECT_UP = 'SELECT_UP';
+export const SELECT_DOWN = 'SELECT_DOWN';
+export const LEADER_BOARD = 'LEADER_BOARD';
+export const SAVE_SCORE = 'SAVE_SCORE';
