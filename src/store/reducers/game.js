@@ -1,8 +1,25 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateGame } from '../../logic/updateGame';
 import { SQLite } from 'expo-sqlite';
+import {insertScore, fetchScores} from '../../helpers/db';
 
 const db = SQLite.openDatabase("tetrisScores");
+
+const isHighScore = (score, scores) => {
+  if(score === 0){ return false };
+  let highScores = [];
+
+  for(let i=0; i<10; i++){
+    highScores.push(Math.max(...scores));
+    scores.splice(scores.indexOf(Math.max(...scores)), 1);
+  }
+
+  if(score > Math.min(...highScores)){
+    return true;
+  } else {
+    return false;
+  }
+}
 
 const newGame = () => {
   return {
@@ -50,17 +67,20 @@ const initialState = {
   scores: [],
   page: "menu",
   selector: 0,
-  leaderBoard: false
+  leaderBoard: false,
+  isHighScore: false,
+  name: ""
 }
 
 const game = (state = initialState, action) => {
   switch(action.type){
     case actionTypes.START_GAME:
       return {
-        ...state,
         ...newGame(),
         scores: state.scores,
-        page: "game"
+        page: "game",
+        selector: 0,
+        leaderBoard: false
       }
     case actionTypes.UPDATE:
       const newState = updateGame(state);
@@ -119,17 +139,30 @@ const game = (state = initialState, action) => {
         ...state,
         leaderBoard: !state.leaderBoard
       };
-    case actionTypes.SAVE_SCORE:
-      db.transaction(tx => {
-        tx.executeSql(
-          `select * from tetrisScores;`,
-          [],
-          (_, res) => alert(res)
-        ),
-        () => alert('ere'),
-        () => alert('here')
+    case actionTypes.END:
+      let s = [];
+      fetchScores().then((scores) => {
+        s = scores.rows._array.map(score => score.score);
       });
-      return state;
+      return {
+        ...state,
+        page: "lost",
+        selector: 0,
+        isHighScore: isHighScore(state.score, s)
+      };
+    case actionTypes.SET_NAME:
+      return {
+        ...state,
+        name: action.name
+      };
+    case actionTypes.INSERT_SCORE:
+      insertScore(state.name, state.score);
+      return {
+        ...state,
+        page: "menu",
+        selector: 0,
+        name: ""
+      };
     default:
       return state;
   }

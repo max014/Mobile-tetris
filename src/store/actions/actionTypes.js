@@ -9,4 +9,5 @@ export const NAVIGATE = 'NAVIGATE';
 export const SELECT_UP = 'SELECT_UP';
 export const SELECT_DOWN = 'SELECT_DOWN';
 export const LEADER_BOARD = 'LEADER_BOARD';
-export const SAVE_SCORE = 'SAVE_SCORE';
+export const INSERT_SCORE = 'INSERT_SCORE';
+export const SET_NAME = 'SET_NAME';

@@ -48,7 +48,7 @@ const Controls = props => {
   }
 
   const lostSelect =  {
-    0: props.startGame,
+    0: props.isHighScore ? props.insertScore : props.startGame,
     1: props.menu
   }
 
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     page: state.game.page,
-    selector: state.game.selector
+    selector: state.game.selector,
+    isHighScore: state.game.isHighScore
   }
 }
 
@@ -186,7 +187,8 @@ const mapDispatchToProps = dispatch => {
     menu: () => dispatch({type: actionTypes.NAVIGATE, page: "menu"}),
     selectUp: (length) => dispatch({type: actionTypes.SELECT_UP, length: length}),
     selectDown: (length) => dispatch({type: actionTypes.SELECT_DOWN, length: length}),
-    switchLeaderBoard: () => dispatch({type: actionTypes.LEADER_BOARD})
+    switchLeaderBoard: () => dispatch({type: actionTypes.LEADER_BOARD}),
+    insertScore: () => dispatch({type: actionTypes.INSERT_SCORE})
   };
 };
 

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Block from './Block';
 import * as actionTypes from '../store/actions/actionTypes';
 import {View, StyleSheet} from 'react-native';
-import {insertScore} from '../helpers/db';
 
 class Display extends Component {
 	state = {
@@ -20,7 +19,6 @@ class Display extends Component {
 			// if game ends
 			if(this.props.lost){
 				clearInterval(this.interval);
-				insertScore('Max', 23);
 				this.props.end();
 			}
 		}, this.props.refreshRate);
@@ -68,7 +66,7 @@ const mapDispatchToProps = dispatch => {
     return {
         update: () => dispatch({type: actionTypes.UPDATE}),
         setInput: (input) => dispatch({type: actionTypes.SET_INPUT, input: input}),
-        end: () => dispatch({type: actionTypes.NAVIGATE, page: "lost"})
+        end: () => dispatch({type: actionTypes.END})
     };
 }
 

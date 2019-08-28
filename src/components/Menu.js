@@ -8,18 +8,19 @@ import {fetchScores} from '../helpers/db';
 
 const Menu = props => {
 	const [localScores, setLocalScores] = useState([]);
-	fetchScores().then((scores) => {
-		const s = scores.rows._array.map(score => {
-			return {name: score.name, score: score.score};
-		});
-		setLocalScores(s);
-	});
+	
 
 	useEffect(() => {
 		fetch('https://api.programmermax.com/tetris', {
 			method: "GET",
 		}).then(res => res.json())
 		  .then(data => props.setScores(data));
+		fetchScores().then((scores) => {
+			const s = scores.rows._array.map(score => {
+				return {name: score.name, score: score.score};
+			});
+			setLocalScores(s);
+		});
 	}, []);
 
 	const scores = props.leaderBoard ? props.scores : localScores;
