@@ -34,7 +34,7 @@ export const fetchScores = () => {
 	const promise = new Promise((resolve, reject) => {
 		db.transaction(tx => {
 			tx.executeSql(
-				`SELECT * FROM tetrisScores;`,
+				`SELECT * FROM tetrisScores ORDER BY score DESC;`,
 				[],
 				(_, result) => resolve(result),
 				(_, err) => reject(err)
@@ -42,4 +42,18 @@ export const fetchScores = () => {
 		});
 	});
 	return promise;
-}
+};
+
+export const prune = () => {
+	const promise = new Promise((resolve, reject) => {
+		db.transaction(tx => {
+			tx.executeSql(
+				`DELETE FROM tetrisScores WHERE id NOT IN (SELECT id FROM tetrisScores ORDER BY score DESC LIMIT 10);`,
+				[],
+				(_, result) => resolve(result),
+				(_, err) => reject(err)
+			);
+		});
+	});
+	return promise;
+};

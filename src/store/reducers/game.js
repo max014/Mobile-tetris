@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateGame } from '../../logic/updateGame';
 import { SQLite } from 'expo-sqlite';
-import {insertScore, fetchScores} from '../../helpers/db';
+import {insertScore, fetchScores, prune} from '../../helpers/db';
 
 const db = SQLite.openDatabase("tetrisScores");
 
@@ -157,6 +157,7 @@ const game = (state = initialState, action) => {
       };
     case actionTypes.INSERT_SCORE:
       insertScore(state.name, state.score);
+      prune();
       return {
         ...state,
         page: "menu",

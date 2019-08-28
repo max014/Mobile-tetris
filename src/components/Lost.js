@@ -11,7 +11,11 @@ const Lost = props => {
 			<Text>Your Score: {props.score}</Text>
 			{props.isHighScore ? 
 				<View>
-					<TextInput onChangeText={(e) => props.setName(e)} style={styles.input}/>
+					<TextInput
+						autoFocus
+						onSubmitEditing={props.insertScore}
+						onChangeText={(e) => props.setName(e)}
+						style={styles.input}/>
 					<Selector options={[
 						{title: 'Save'},
 						{title: 'Main Menu'}]}/>
@@ -45,7 +49,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		setName: (name) => dispatch({type: actionTypes.SET_NAME, name: name})
+		setName: (name) => dispatch({type: actionTypes.SET_NAME, name: name}),
+		insertScore: () => dispatch({type: actionTypes.INSERT_SCORE})
 	}
 };
 
