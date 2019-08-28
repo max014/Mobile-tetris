@@ -12,7 +12,7 @@ class Display extends Component {
 	componentDidMount() {
 		// Game Loop
 		this.interval = setInterval(() => {
-			if(!this.props.paused){
+			if(!this.props.paused && !this.props.quit){
 				this.props.update();
 			}
 			this.setState({ time: Date.now()});
@@ -58,7 +58,8 @@ const mapStateToProps = state => {
         height: state.game.height,
         step: state.game.step,
         lost: state.game.lost,
-        paused: state.game.paused
+        paused: state.game.paused,
+        quit: state.game.quit
     };
 }
 

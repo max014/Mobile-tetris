@@ -58,7 +58,8 @@ const newGame = () => {
     score: 0,
     lines: 0,
     lost: false,
-    paused: false
+    paused: false,
+    quit: false
   }
 }
 
@@ -113,6 +114,13 @@ const game = (state = initialState, action) => {
       };
     case actionTypes.PAUSE:
       return {...state, paused: !state.paused};
+    case actionTypes.QUIT:
+      return {...state, quit: !state.quit};
+    case actionTypes.CONFIRM_QUIT:
+      return {
+        ...state,
+        lost: true
+      }
     case actionTypes.SELECT_UP:
       let selector = null;
       if(state.selector === 0){

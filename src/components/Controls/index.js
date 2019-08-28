@@ -52,6 +52,11 @@ const Controls = props => {
     1: props.menu
   }
 
+  const quitSelect = {
+    0: props.confrimQuit,
+    1: props.quit
+  }
+
   let buttons = {};
 
   useEffect(() => {
@@ -67,15 +72,28 @@ const Controls = props => {
         b: () => null
       };
     } else if(props.page === 'game') {
-      buttons = {
-        up: () => null,
-        down: () => props.setInput(40),
-        left: () => props.setInput(37),
-        right: () => props.setInput(39),
-        start: props.pause,
-        select: () => null,
-        a: () => props.setInput(68),
-        b: () => props.setInput(83)
+      if(props.selectOpen){
+        buttons = {
+          up: () => props.selectUp(2),
+          down: () => props.selectDown(2),
+          left: () => null,
+          right: () => null,
+          start: quitSelect[props.selector],
+          select: props.quit,
+          a: quitSelect[props.selector],
+          b: () => null
+        };
+      } else {
+        buttons = {
+          up: () => null,
+          down: () => props.setInput(40),
+          left: () => props.setInput(37),
+          right: () => props.setInput(39),
+          start: props.pause,
+          select: props.quit,
+          a: () => props.setInput(68),
+          b: () => props.setInput(83)
+        };
       };
     } else if(props.page === 'lost') {
       buttons = {
@@ -89,7 +107,7 @@ const Controls = props => {
         b: () => null
       };
     };
-  }, [props.page, props.selector]);
+  }, [props.page, props.selector, props.selectOpen]);
 
   return (
     <View style={styles.controls}>
@@ -175,7 +193,8 @@ const mapStateToProps = state => {
   return {
     page: state.game.page,
     selector: state.game.selector,
-    isHighScore: state.game.isHighScore
+    isHighScore: state.game.isHighScore,
+    selectOpen: state.game.quit
   }
 }
 
@@ -184,6 +203,8 @@ const mapDispatchToProps = dispatch => {
     setInput: (input) => dispatch({type: actionTypes.SET_INPUT, input: input}),
     startGame: () => dispatch({type: actionTypes.START_GAME}),
     pause: () => dispatch({type: actionTypes.PAUSE}),
+    quit: () => dispatch({type: actionTypes.QUIT}),
+    confrimQuit: () => dispatch({type: actionTypes.CONFIRM_QUIT}),
     menu: () => dispatch({type: actionTypes.NAVIGATE, page: "menu"}),
     selectUp: (length) => dispatch({type: actionTypes.SELECT_UP, length: length}),
     selectDown: (length) => dispatch({type: actionTypes.SELECT_DOWN, length: length}),

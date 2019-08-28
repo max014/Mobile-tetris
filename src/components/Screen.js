@@ -4,6 +4,7 @@ import Display from './Display';
 import Score from './Score';
 import Level from './Level';
 import Pause from './Pause';
+import Quit from './Quit';
 import Menu from './Menu';
 import Lost from './Lost';
 import {connect} from 'react-redux';
@@ -28,6 +29,7 @@ const Screen = props => {
             <Score/>
           </View>
           <Pause/>
+          <Quit/>
         </React.Fragment>
       );
       break;
