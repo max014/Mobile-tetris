@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	score: {
+		width: 200,
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
