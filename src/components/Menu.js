@@ -8,7 +8,6 @@ import {fetchScores} from '../helpers/db';
 
 const Menu = props => {
 	const [localScores, setLocalScores] = useState([]);
-	
 
 	useEffect(() => {
 		fetch('https://api.programmermax.com/tetris', {

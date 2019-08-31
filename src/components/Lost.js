@@ -10,7 +10,8 @@ const Lost = props => {
 			<Text>Game Over</Text>
 			<Text>Your Score: {props.score}</Text>
 			{props.isHighScore ? 
-				<View>
+				<View style={{width: 140}}>
+					<Text style={styles.enter}>Enter Your Name</Text>
 					<TextInput
 						autoFocus
 						onSubmitEditing={props.insertScore}
@@ -36,7 +37,14 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		backgroundColor: '#fff',
-		width: 100
+		width: "100%",
+		marginTop: 10,
+		marginBottom: 10
+	},
+	enter: {
+		marginTop: 10,
+		fontSize: 18,
+		textAlign: 'center'
 	}
 });
 
