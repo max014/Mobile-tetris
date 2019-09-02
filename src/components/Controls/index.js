@@ -48,7 +48,7 @@ const Controls = props => {
   }
 
   const lostSelect =  {
-    0: props.isHighScore ? props.insertScore : props.startGame,
+    0: props.isHighScoreLocal ? props.insertScore : props.startGame,
     1: props.menu
   }
 
@@ -193,7 +193,8 @@ const mapStateToProps = state => {
   return {
     page: state.game.page,
     selector: state.game.selector,
-    isHighScore: state.game.isHighScore,
+    isHighScoreLocal: state.game.isHighScoreLocal,
+    isHighScoreRemote: state.game.isHighScoreRemote,
     selectOpen: state.game.quit
   }
 }

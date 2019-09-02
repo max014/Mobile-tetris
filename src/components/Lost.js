@@ -5,11 +5,12 @@ import * as actionTypes from '../store/actions/actionTypes';
 import Selector from './Controls/Selector';
 
 const Lost = props => {
+	
 	return (
 		<View style={styles.container}>
 			<Text>Game Over</Text>
 			<Text>Your Score: {props.score}</Text>
-			{props.isHighScore ? 
+			{props.isHighScoreLocal || props.isHighScoreRemote ? 
 				<View style={{width: 140}}>
 					<Text style={styles.enter}>Enter Your Name</Text>
 					<TextInput
@@ -20,7 +21,7 @@ const Lost = props => {
 					<Selector options={[
 						{title: 'Save'},
 						{title: 'Main Menu'}]}/>
-				</View> : 
+				</View> :
 				<Selector options={[
 					{title: 'New Game'},
 					{title: 'Main Menu'}]}/>
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
 	return {
 		score: state.game.score,
-		isHighScore: state.game.isHighScore
+		isHighScoreLocal: state.game.isHighScoreLocal,
+		isHighScoreRemote: state.game.isHighScoreRemote
 	}
 };
 

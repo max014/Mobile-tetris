@@ -19,7 +19,37 @@ const isHighScore = (score, scores) => {
   } else {
     return false;
   }
-}
+};
+
+const deleteEleventhScore = (scores) => {
+  if(scores.length >= 9){
+    let scoresCopy = scores.map((score) => {
+      return score;
+    });
+    let unsorted = scores.map((score) => {
+      return score.score;
+    });
+    let sorted = [];
+
+    for(let i=0; i<9; i++){
+      let HighestScoreIndex = unsorted.indexOf(Math.max(...unsorted))
+      sorted.push(scoresCopy[HighestScoreIndex]);
+      unsorted.splice(HighestScoreIndex, 1);
+      scoresCopy.splice(HighestScoreIndex, 1);
+    }
+    
+    scoresCopy.map((score) => {
+      fetch(`https://api.programmermax.com/tetris-mobile/${score._id}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1heC5vcHBvcjFAZ21haWwuY29tIiwiaWQiOiI1ZDM0ZTE2NGNkMDBkMWFjYWJhYzU2ODEiLCJpYXQiOjE1NjM4MTA1OTksImV4cCI6MTU2MzgxNDE5OX0.YaOX4kySNKSUqKccgZbboVLljB9Fi8jFFteQr9Fr0A8'
+        }
+      });
+      return null;
+    });
+  }
+};
 
 const newGame = () => {
   return {
@@ -69,7 +99,8 @@ const initialState = {
   page: "menu",
   selector: 0,
   leaderBoard: false,
-  isHighScore: false,
+  isHighScoreLocal: false,
+  isHighScoreRemote: false,
   name: ""
 }
 
@@ -156,7 +187,8 @@ const game = (state = initialState, action) => {
         ...state,
         page: "lost",
         selector: 0,
-        isHighScore: isHighScore(state.score, s)
+        isHighScoreLocal: isHighScore(state.score, s),
+        isHighScoreRemote: isHighScore(state.score, state.scores.map(s => s.score))
       };
     case actionTypes.SET_NAME:
       return {
@@ -166,6 +198,19 @@ const game = (state = initialState, action) => {
     case actionTypes.INSERT_SCORE:
       insertScore(state.name, state.score);
       prune();
+      if(state.isHighScoreRemote){
+        fetch('https://api.programmermax.com/tetris-mobile', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: state.name,
+            score: state.score
+          })
+        });
+        deleteEleventhScore(state.scores);
+      }
       return {
         ...state,
         page: "menu",

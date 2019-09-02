@@ -10,10 +10,28 @@ const Menu = props => {
 	const [localScores, setLocalScores] = useState([]);
 
 	useEffect(() => {
-		fetch('https://api.programmermax.com/tetris', {
+		fetch('https://api.programmermax.com/tetris-mobile', {
 			method: "GET",
 		}).then(res => res.json())
-		  .then(data => props.setScores(data));
+		  .then(data => {
+
+		  	let scoresCopy = data.map((score) => {
+		      return score;
+		    });
+		    let unsorted = data.map((score) => {
+		      return score.score;
+		    });
+		    let sorted = [];
+
+		    for(let i=0; i<data.length; i++){
+		      let HighestScoreIndex = unsorted.indexOf(Math.max(...unsorted))
+		      sorted.push(scoresCopy[HighestScoreIndex]);
+		      unsorted.splice(HighestScoreIndex, 1);
+		      scoresCopy.splice(HighestScoreIndex, 1);
+		    }
+
+		  	props.setScores(sorted)
+		  });
 		fetchScores().then((scores) => {
 			const s = scores.rows._array.map(score => {
 				return {name: score.name, score: score.score};
